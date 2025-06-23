@@ -7,11 +7,30 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="username-modal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,30,47,0.95);display:flex;align-items:center;justify-content:center;z-index:1000;">
-    <div style="background:#22223b;padding:2rem 3rem;border-radius:8px;box-shadow:0 2px 16px #0006;display:flex;flex-direction:column;align-items:center;gap:1rem;">
-      <h2 style="margin:0 0 1rem 0;">Enter your username</h2>
-      <input id="username-input" type="text" placeholder="Username" style="padding:0.5rem 1rem;border-radius:4px;border:none;font-size:1rem;" />
-      <button id="username-submit" style="padding:0.5rem 2rem;background:#9B5DE5;color:white;border:none;border-radius:4px;font-size:1rem;cursor:pointer;">Start Chatting</button>
+  <div id="auth-modal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,30,47,0.95);display:flex;align-items:center;justify-content:center;z-index:1000;">
+    <div class="auth-container">
+      <div class="auth-tabs">
+        <button id="login-tab" class="active">Login</button>
+        <button id="signup-tab">Sign Up</button>
+      </div>
+      <form id="login-form" class="auth-form">
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username" required />
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <div class="auth-actions">
+          <button type="submit" class="auth-btn">Login</button>
+        </div>
+      </form>
+      <form id="signup-form" class="auth-form" style="display:none;">
+        <h2>Sign Up</h2>
+        <input type="text" id="signup-username" placeholder="Username" required />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <div class="auth-actions">
+          <button type="submit" class="auth-btn">Sign Up</button>
+        </div>
+      </form>
     </div>
   </div>
   <div class="app">
@@ -35,6 +54,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <!-- Firebase Realtime Database -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     // Your web app's Firebase configuration
     const firebaseConfig = {

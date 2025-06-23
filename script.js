@@ -4,13 +4,21 @@ const chatMessages = document.getElementById('chat-messages');
 
 let username = '';
 
-const usernameModal = document.getElementById('username-modal');
-const usernameInput = document.getElementById('username-input');
-const usernameSubmit = document.getElementById('username-submit');
+// AUTH MODAL LOGIC
+const authModal = document.getElementById('auth-modal');
+const loginTab = document.getElementById('login-tab');
+const signupTab = document.getElementById('signup-tab');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const loginUsername = document.getElementById('login-username');
+const signupUsername = document.getElementById('signup-username');
+
+// Initialize Firebase Auth
+const auth = firebase.auth();
 
 function setUsername(name) {
   username = name;
-  usernameModal.style.display = 'none';
+  authModal.style.display = 'none';
   chatInput.disabled = false;
   chatInput.focus();
 }
@@ -18,22 +26,73 @@ function setUsername(name) {
 // Prevent sending messages until username is set
 chatInput.disabled = true;
 
-usernameSubmit.addEventListener('click', () => {
-  const name = usernameInput.value.trim();
-  if (name) setUsername(name);
+function showLogin() {
+  loginTab.classList.add('active');
+  signupTab.classList.remove('active');
+  loginForm.style.display = '';
+  signupForm.style.display = 'none';
+}
+function showSignup() {
+  signupTab.classList.add('active');
+  loginTab.classList.remove('active');
+  signupForm.style.display = '';
+  loginForm.style.display = 'none';
+}
+loginTab.addEventListener('click', showLogin);
+signupTab.addEventListener('click', showSignup);
+
+// SIGN UP
+signupForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const usernameValue = document.getElementById('signup-username').value.trim();
+
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+    // Save username in database
+    await db.ref('users/' + user.uid).set({ username: usernameValue, email });
+    setUsername(usernameValue);
+  } catch (error) {
+    alert(error.message);
+  }
 });
 
-usernameInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const name = usernameInput.value.trim();
-    if (name) setUsername(name);
+// LOGIN
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+
+  try {
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+    // Get username from database
+    const snapshot = await db.ref('users/' + user.uid).once('value');
+    setUsername(snapshot.val().username);
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+// PERSISTENCE (Remember device)
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+// AUTO LOGIN
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    // Get username from database
+    const snapshot = await db.ref('users/' + user.uid).once('value');
+    setUsername(snapshot.val().username);
+    authModal.style.display = 'none';
   }
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  usernameModal.style.display = 'flex';
-  usernameInput.focus();
+  authModal.style.display = 'flex';
+  showLogin();
+  loginUsername.focus();
   loadMessages();
 });
 
