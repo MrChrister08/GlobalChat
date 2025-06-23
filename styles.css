@@ -9,6 +9,7 @@ body {
     display: flex;
     height: 100vh;
     width: 100vw;
+    position: relative;
   }
   
   .sidebar {
@@ -61,6 +62,25 @@ body {
   
   .message {
     margin-bottom: 10px;
+    display: flex;
+    align-items: start;
+    gap: 0.8rem;
+  }
+  
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .message-content {
+    flex: 1;
+    padding-top: 2px;
+  }
+  
+  .message-content strong {
+    margin-right: 0.5rem;
   }
   
   form {
@@ -176,5 +196,383 @@ body {
   .auth-btn:hover,
   .auth-actions button:hover {
     background: #7a3fd6 !important;
+  }
+  
+  .profile-menu-container {
+    position: absolute;
+    top: 1.2rem;
+    right: 2rem;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+  }
+  .profile-menu-btn {
+    background: #23223a;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0003;
+    transition: background 0.2s;
+    pointer-events: auto !important;
+  }
+  .profile-menu-btn:hover {
+    background: #2d2d3a;
+  }
+  .hamburger {
+    display: block;
+    width: 24px;
+    height: 4px;
+    margin: 2.5px 0;
+    background: #bcbcff;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .profile-dropdown {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    background: #23223a;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px #0008;
+    min-width: 200px;
+    padding: 1rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: fadeIn 0.2s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: #bcbcff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  #profile-username {
+    font-weight: bold;
+    color: #fff;
+  }
+  .logout-btn {
+    background: #9B5DE5;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .logout-btn:hover {
+    background: #7a3fd6;
+  }
+  
+  .profile-dropdown-btn {
+    display: block;
+    background: none;
+    border: none;
+    color: #bcbcff;
+    font-size: 1rem;
+    text-align: left;
+    padding: 0.5rem 0.2rem 0.5rem 0.8rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    text-decoration: none;
+  }
+  
+  .profile-dropdown-btn:hover {
+    background: #3A3A59;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .profile-page-outer, .support-page-outer {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+  }
+  
+  .profile-card, .support-card {
+    background: #23223a;
+    border-radius: 12px;
+    box-shadow: 0 2px 24px #0008;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    min-width: 340px;
+    max-width: 95vw;
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  .back-link {
+    color: #bcbcff;
+    text-decoration: underline;
+    margin: 1.5rem 0 0 2rem;
+    display: inline-block;
+    font-size: 1rem;
+  }
+  .back-link:hover {
+    color: #9B5DE5;
+  }
+  
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    background: #23223a;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px #0006, 0 1.5px 8px #0002;
+    padding: 3rem 2.5rem 2.5rem 2.5rem;
+    min-width: 340px;
+    max-width: 95vw;
+    width: 100%;
+    max-width: 420px;
+    margin: 2rem auto;
+  }
+  
+  .profile-modal-avatar-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  #profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+    width: 100%;
+  }
+  
+  #profile-form label {
+    align-self: flex-start;
+    margin-bottom: 0.2rem;
+    color: #bcbcff;
+    font-size: 1rem;
+  }
+  
+  #profile-form input,
+  #profile-form textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    background: #fff;
+    color: #23223a;
+    margin-bottom: 0.2rem;
+    box-sizing: border-box;
+  }
+  
+  .profile-modal-btn {
+    align-self: stretch;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  .profile-card h2 {
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .modern-profile {
+    padding: 2.5rem 2rem 2rem 2rem;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px #0007, 0 1.5px 8px #0002;
+    background: #23223a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2rem;
+  }
+  
+  .profile-avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .profile-avatar-large {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #2d2d3a;
+    border: 4px solid #9B5DE5;
+    margin-bottom: 0.5rem;
+  }
+  
+  .avatar-btn {
+    background: #292938;
+    color: #bcbcff;
+    border-radius: 999px;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    border: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .avatar-btn:hover {
+    background: #9B5DE5;
+    color: #fff;
+  }
+  
+  .profile-username-row {
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+  .profile-username-input {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    background: #292938;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .profile-email-row {
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+  .profile-email-input {
+    width: 100%;
+    font-size: 1rem;
+    color: #bcbcff;
+    background: #23223a;
+    border: none;
+    text-align: center;
+    margin-bottom: 0.2rem;
+  }
+  
+  .profile-bio-row {
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+  .profile-bio-input {
+    width: 100%;
+    min-height: 70px;
+    font-size: 1.1rem;
+    background: #292938;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    resize: vertical;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .save-btn {
+    background: #9B5DE5;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.7rem 0;
+    width: 100%;
+    margin-top: 1.2rem;
+    border: none;
+    transition: background 0.2s;
+  }
+  .save-btn:hover {
+    background: #7a3fd6;
+  }
+  
+  .cooldown-msg {
+    color: #ffb347;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: center;
+  }
+  
+  .support-card.modern-profile {
+    padding: 2.5rem 2rem 2rem 2rem;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px #0007, 0 1.5px 8px #0002;
+    background: #23223a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2rem;
+  }
+  
+  .support-contact-links {
+    width: 100%;
+    text-align: center;
+    color: #bcbcff;
+    margin-bottom: 1.2rem;
+  }
+  
+  .support-contact-links a {
+    color: #9B5DE5;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  .support-contact-links a:hover {
+    color: #7a3fd6;
+  }
+  .discord-link {
+    font-weight: 600;
+    color: #7289da;
+    text-decoration: underline;
+  }
+  .discord-link:hover {
+    color: #9B5DE5;
+  }
+  
+  .support-form-modern {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+  
+  .support-label {
+    color: #bcbcff;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    align-self: flex-start;
+  }
+  
+  .support-form-modern textarea {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
   }
   

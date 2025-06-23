@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="profile-menu-container" style="position: absolute; top: 0.8rem; right: 2rem; z-index: 1100;">
+    <button id="profile-menu-btn" class="profile-menu-btn" aria-label="Open menu">
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+    </button>
+    <div id="profile-dropdown" class="profile-dropdown" style="display:none;">
+      <a href="index.html" class="profile-dropdown-btn">Main Chat</a>
+      <a href="profile.html" class="profile-dropdown-btn">Profile</a>
+      <a href="support.html" class="profile-dropdown-btn">Support</a>
+      <div class="profile-dropdown-divider"></div>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+  </div>
+  <div class="profile-page-outer">
+    <div class="profile-card modern-profile">
+      <div class="profile-avatar-section">
+        <img id="profile-avatar" class="profile-avatar-large" src="https://ui-avatars.com/api/?name=User" alt="Profile Picture" />
+        <button id="change-avatar-btn" class="profile-modal-btn avatar-btn">Change</button>
+        <input type="file" id="avatar-upload" accept="image/*" style="display:none;" />
+      </div>
+      <form id="profile-form">
+        <div class="profile-username-row">
+          <input type="text" id="profile-username-input" class="profile-username-input" placeholder="Username" />
+        </div>
+        <div class="profile-email-row">
+          <input type="email" id="profile-email-input" class="profile-email-input" placeholder="Email" readonly />
+        </div>
+        <div class="profile-bio-row">
+          <textarea id="profile-description-input" class="profile-bio-input" rows="3" placeholder="Bio"></textarea>
+        </div>
+        <span id="username-cooldown-msg" class="cooldown-msg"></span>
+        <button type="submit" class="profile-modal-btn save-btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <!-- Firebase Realtime Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbKYHFJBvxtDRaWj9lwI-4xAFVfQKkHv0",
+      authDomain: "global-chat-c7ccc.firebaseapp.com",
+      databaseURL: "https://global-chat-c7ccc-default-rtdb.firebaseio.com",
+      projectId: "global-chat-c7ccc",
+      storageBucket: "global-chat-c7ccc.appspot.com",
+      messagingSenderId: "396951044590",
+      appId: "1:396951044590:web:f238dfddd37dd292948eff",
+      measurementId: "G-71CCXZ0911"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.database();
+  </script>
+  <script src="profile.js"></script>
+</body>
+</html>
