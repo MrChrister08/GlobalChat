@@ -177,22 +177,18 @@ function loadMessages() {
   // Reference to messages
   const messagesRef = db.ref('messages');
   
-  // Listen for all messages
+  // Get initial messages
   messagesRef
     .orderByChild('timestamp')
     .limitToLast(100)
-    .on('value', async (snapshot) => {
-      // Clear existing messages
-      chatMessages.innerHTML = '';
-      
-      // Convert to array for sorting
+    .once('value')
+    .then(async (snapshot) => {
       const messages = [];
       snapshot.forEach((childSnapshot) => {
-        const msg = {
+        messages.push({
           id: childSnapshot.key,
           ...childSnapshot.val()
-        };
-        messages.push(msg);
+        });
       });
       
       // Sort by timestamp
@@ -206,6 +202,22 @@ function loadMessages() {
       
       // Scroll to bottom
       chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Now listen for new messages only
+      const lastTimestamp = messages.length > 0 ? messages[messages.length - 1].timestamp : 0;
+      
+      messagesRef
+        .orderByChild('timestamp')
+        .startAfter(lastTimestamp)
+        .on('child_added', async (snapshot) => {
+          const msgObj = {
+            id: snapshot.key,
+            ...snapshot.val()
+          };
+          const messageElement = await addMessageToDOM(msgObj);
+          chatMessages.appendChild(messageElement);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
     });
 }
 
