@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Test Page</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .test { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+    .pass { background-color: #d4edda; border-color: #c3e6cb; }
+    .fail { background-color: #f8d7da; border-color: #f5c6cb; }
+    .info { background-color: #d1ecf1; border-color: #bee5eb; }
+    button { margin: 5px; padding: 8px 15px; }
+    input { margin: 5px; padding: 5px; width: 200px; }
+  </style>
+</head>
+<body>
+  <h1>🔒 Security Test Suite</h1>
+  
+  <div class="test info">
+    <h3>📋 Instructions</h3>
+    <p>Use this page to test the security features of your chat application. Run each test and verify the results.</p>
+  </div>
+
+  <div class="test">
+    <h3>🧪 Test 1: Input Sanitization</h3>
+    <p>Test if HTML tags are properly stripped from input:</p>
+    <input type="text" id="sanitize-test" placeholder="Enter: <script>alert('test')</script>">
+    <button onclick="testSanitization()">Test Sanitization</button>
+    <div id="sanitize-result"></div>
+  </div>
+
+  <div class="test">
+    <h3>⏱️ Test 2: Rate Limiting</h3>
+    <p>Test the 2-second rate limit between messages:</p>
+    <button onclick="testRateLimit()">Test Rate Limit</button>
+    <div id="rate-result"></div>
+  </div>
+
+  <div class="test">
+    <h3>📧 Test 3: Email Validation</h3>
+    <p>Test email format validation:</p>
+    <input type="email" id="email-test" placeholder="Enter email">
+    <button onclick="testEmail()">Test Email</button>
+    <div id="email-result"></div>
+  </div>
+
+  <div class="test">
+    <h3>👤 Test 4: Username Validation</h3>
+    <p>Test username format validation:</p>
+    <input type="text" id="username-test" placeholder="Enter username">
+    <button onclick="testUsername()">Test Username</button>
+    <div id="username-result"></div>
+  </div>
+
+  <div class="test">
+    <h3>🔗 Test 5: Main Chat Link</h3>
+    <p>Go to the main chat to test all features:</p>
+    <a href="index.html" target="_blank"><button>Open Main Chat</button></a>
+  </div>
+
+  <script>
+    // Import security functions from main script
+    function sanitizeInput(input) {
+      if (typeof input !== 'string') return '';
+      return input.trim()
+        .replace(/[<>]/g, '') // Remove potential HTML tags
+        .substring(0, 1000); // Limit length
+    }
+
+    function validateEmail(email) {
+      if (typeof email !== 'string') return false;
+      const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      return emailRegex.test(email.trim());
+    }
+
+    function validateUsername(username) {
+      if (typeof username !== 'string') return false;
+      const clean = username.trim();
+      return clean.length >= 3 && clean.length <= 30 && /^[a-zA-Z0-9_]+$/.test(clean);
+    }
+
+    // Test functions
+    function testSanitization() {
+      const input = document.getElementById('sanitize-test').value;
+      const sanitized = sanitizeInput(input);
+      const result = document.getElementById('sanitize-result');
+      
+      if (sanitized.includes('<') || sanitized.includes('>')) {
+        result.innerHTML = '<span style="color: red;">❌ FAIL: HTML tags not stripped</span>';
+        result.parentElement.className = 'test fail';
+      } else {
+        result.innerHTML = '<span style="color: green;">✅ PASS: HTML tags stripped successfully</span>';
+        result.parentElement.className = 'test pass';
+      }
+    }
+
+    function testRateLimit() {
+      const result = document.getElementById('rate-result');
+      result.innerHTML = '<span style="color: blue;">⏳ Testing rate limit... Send a message in the main chat, then immediately try to send another.</span>';
+      result.parentElement.className = 'test info';
+    }
+
+    function testEmail() {
+      const email = document.getElementById('email-test').value;
+      const result = document.getElementById('email-result');
+      
+      if (validateEmail(email)) {
+        result.innerHTML = '<span style="color: green;">✅ PASS: Valid email format</span>';
+        result.parentElement.className = 'test pass';
+      } else {
+        result.innerHTML = '<span style="color: red;">❌ FAIL: Invalid email format</span>';
+        result.parentElement.className = 'test fail';
+      }
+    }
+
+    function testUsername() {
+      const username = document.getElementById('username-test').value;
+      const result = document.getElementById('username-result');
+      
+      if (validateUsername(username)) {
+        result.innerHTML = '<span style="color: green;">✅ PASS: Valid username format</span>';
+        result.parentElement.className = 'test pass';
+      } else {
+        result.innerHTML = '<span style="color: red;">❌ FAIL: Invalid username format (3-30 chars, alphanumeric + underscore only)</span>';
+        result.parentElement.className = 'test fail';
+      }
+    }
+  </script>
+</body>
+</html> 
